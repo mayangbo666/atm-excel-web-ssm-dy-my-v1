@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.mayangbo666.dao.CardDao">
+
+    <resultMap id="cardResultMap" type="com.github.mayangbo666.entity.Card">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="cardNum" column="card_no"/>
+        <result property="wallet" column="wallet"/>
+        <result property="password" column="password"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="card_filed">
+      id, user_id, card_no, wallet, password, password, create_time
+    </sql>
+
+    <insert id="insertCardByCardNum" useGeneratedKeys="true" keyProperty="id">
+      INSERT into atm_card(user_id, card_no, wallet, password, create_time)
+                values (#{userId}, #{cardNum}, 0, #{password}, now())
+    </insert>
+
+    <update id="updateAmountByCardNum">
+        update atm_card set wallet = #{amount} where card_no = #{cardNum}
+    </update>
+
+    <!--<select id="selectUserIdByCardNum" resultType="int">
+        select user_id from atm_card where card_no = #{cardNum}
+    </select>-->
+
+    <select id="selectCardByCardNum" resultMap="cardResultMap">
+        select <include refid="card_filed"/> from atm_card where card_no = #{cardNum}
+    </select>
+
+    <select id="selectCardsByUserId" resultMap="cardResultMap">
+        select <include refid="card_filed"></include> from atm_card where user_id = #{userId}
+    </select>
+
+</mapper>

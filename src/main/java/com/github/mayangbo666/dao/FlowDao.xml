@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.mayangbo666.dao.FlowDao">
+
+    <resultMap id="flowResultMap" type="com.github.mayangbo666.entity.Flow">
+        <id property="id" column="id"/>
+        <result property="cardId" column="card_id"/>
+        <result property="cardNum" column="card_no"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="tradeAmount" column="wallet"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="listFlowByCardNum" resultMap="flowResultMap">
+        select card_no, wallet, trade_type, create_time from atm_flow where card_no = #{cardNum} limit #{offset}, #{pageNum}
+    </select>
+
+    <select id="countFlowByCardNum" resultType="int">
+        select count(*) from atm_flow where card_no = #{cardNum}
+    </select>
+
+    <insert id="save"  useGeneratedKeys="true" keyProperty="id">
+        insert into atm_flow(card_id, card_no, trade_type, wallet, create_time) values (#{cardId}, #{cardNum}, #{tradeType}, #{tradeAmount}, now())
+    </insert>
+
+</mapper>
